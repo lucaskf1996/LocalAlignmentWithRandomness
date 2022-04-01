@@ -1,16 +1,11 @@
-# Algoritmo de Smith Waterman
-O algoritmo tem a finalidade de fazer alinhamento local de duas sequências de DNA. Ele utiliza como entrada as duas sequências e o tamanho delas. Sua saída é um arquivo .txt contendo a matriz com os valores, o maior valor encontrado e ambas as sequências alinhadas. 
-A abordagem procura encontrar subsequências que maximizam os valores de pareamento. Para calcular a matriz de valores e obter o valor máximo, segue-se o seguinte algoritimo:
+# Algoritmo para alinhamento de sequências de DNA com aleatoriedade
+Sendo i o índice do início da substring A, j o índice do início da substring B, n o tamanho da substring A, m o tamanho da substring B, k o tamanho das substrings e p a quantidade de substrings geradas em B, utiliza-se o pseudo-código abaixo para fazer os alinhamentos:
 
-1. Inicializar H[i,0]=0, 0≤i≤n
-2. Inicializar H[0,j]=0, 0≤j≤m
-3. Para cada 1≤i≤n e 1≤j≤m:
-4.     Calcular diagonal = H[i-1,j-1] + w(a[i],b[j]), onde w(a[i],b[j])=2 se houve match, 
-                           w(a[i],b[j])= -1 se houve mismatch e  
-                           w(a[i],b[j])= -1 se houve gap
-5.     Calcular deleção  = H[i-1,j] - 1
-6.     Calcular inserção = H[i,j-1] - 1
-7.     Calcular H[i,j]=máximo (0, diagonal, deleção, inserção)
-9. Retornar o máximo de H
+1. Gerar uma subsequencia sb=b[j,j+1,...,j+k] de b, de tamanho aleatório k, 1<=k<=m, e 0<=j<=m 
+2. Gerar um número aleatório inteiro positivo p
+3. Gerar p subsequencias sa=a[i,i+1,...,i+k] de a, com tamanho k calculado no passo (1), 0<=i<=n
+4. Calcular os scores de cada par (sa,sb) com os pesos wmat, wmis e wgap
+5. Devolver o score máximo m entre os scores do passo (4) e as subsequencias associadas a ele
 
-Durante o calculo do máximo entre diagonal, deleção e inserção no passo 7, a origem do valor é guardada no H[i,j], ou seja, caso o máximo seja o da diagonal, então a origem guardada é um código referente a diagonal, caso seja de deleção, um código referente a deleção e caso seja de inserção, um código referente a inserção. Para obter as sequências alinhadas pode-se utilizar essas origens dos valores para gerar a sequência da frente para trás e invertê-la no final. 
+Alguns tratamentos foram efetuados para que o programa funcione corretamente. Primeiramente verifica-se qual a menor sequência entre as duas que serviram de entrada para o cálculo do valor k, evitando que este seja maior que o tamanho de uma das sequências originais. Outro tratamento é que os valores de j devem ser entre 0 e m-k. Os valores de j, k e p são gerados aleatóriamente. Além disso, os valores de wmat, wmis, wgap são os mesmos utilizados no outro projeto (https://github.com/lucaskf1996/SmithWaterman) para que uma comparação possa ser feita eventualmente.
+Outras obsevações a serem feitas é que o cálculo do score é feito de caractere em caractere, podendo ter um resultado negativo e que i foi mantido como 0, mas que pode ser facilmente modificado para adicionar mais aleatoriedade à solução.
